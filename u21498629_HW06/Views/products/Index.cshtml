@@ -1,0 +1,99 @@
+﻿@model PagedList.IPagedList<u21498629_HW06.Models.product>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Products</h2>
+
+@using (Html.BeginForm("Index", "products", FormMethod.Get))
+
+{
+    <p>
+        @Html.TextBox("SearchString", "Enter product name...", ViewBag.CurrentFilter as string)
+        <input type="submit" class="btn btn-primary" value="Search" />
+        @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-info" })
+
+    </p>
+}
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.product_name)*@
+            Name
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.model_year)*@
+            Year
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.list_price)*@
+            Price
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.brand.brand_name)*@
+            Brand
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.category.category_name)*@
+            Category
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.product_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.model_year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.list_price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.brand.brand_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.category.category_name)
+            </td>
+            <td >
+                @Html.ActionLink("Edit", "Edit", new { id = item.product_id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.product_id}, new { @class = "btn btn-info editModal" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.product_id }, new { @class = "btn btn-danger"})
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+
+<div id='editModal' class='modal' style="text-align:right;" role="dialog">
+    <div class="modal-dialog" style="width:900px; height:400px; padding:10px;">
+        <div class="modal-content" style="overflow: auto; padding:10px; background-color:#d2f5f4;">
+            <button type="button" id="closebtn"> x </button>
+            <div class="modal-body" id='myModalContent' style="width:850px; height:400px; padding:10px;">
+               @* @Html.Partial("DetailsPartial", Model)*@
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".editModal").click(function (e) {
+                $('#editModal').modal('show');
+            });
+        })
+    </script>
+}
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
