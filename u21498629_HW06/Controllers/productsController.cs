@@ -18,10 +18,8 @@ namespace u21498629_HW06.Models
         // GET: products
         public ActionResult Index(string currentFilter, string searchString, int? page)
         {
-            //List<product> products = new List<product>();
 
             var products = db.products.Include(p => p.brand).Include(p => p.category);
-            //List<product> product_ = new List<product>(products);
 
             if (searchString != null)
             {
@@ -48,7 +46,7 @@ namespace u21498629_HW06.Models
         }
 
         // GET: products/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? id, int? page)
         {
             if (id == null)
             {
@@ -59,7 +57,8 @@ namespace u21498629_HW06.Models
             {
                 return HttpNotFound();
             }
-            return PartialView(product);
+
+            return PartialView("DetailsPartial", product);
             //return View(product);
         }
 
@@ -159,5 +158,41 @@ namespace u21498629_HW06.Models
             }
             base.Dispose(disposing);
         }
+
+        //private Context _context;
+        //public productsController()
+        //{
+        //    _context = new Context();
+        //}
+
+        //public JsonResult List()
+        //{
+        //    return Json(_context.Products.ToList(), JsonRequestBehavior.AllowGet);
+        //}
+        //public JsonResult Add(product products)
+        //{
+        //    _context.Products.Add(products);
+        //    _context.SaveChanges();
+        //    return Json(JsonRequestBehavior.AllowGet);
+        //}
+        //public JsonResult GetbyID(int ID)
+        //{
+        //    return Json(_context.Products.FirstOrDefault(x => x.product_id == ID), JsonRequestBehavior.AllowGet);
+        //}
+        //public JsonResult Update(product products)
+        //{
+        //    var data = _context.Products.FirstOrDefault(x => x.product_id == products.product_id);
+        //    if (data != null)
+        //    {
+        //        data.product_name = products.product_name;
+        //        data.model_year = products.model_year;
+        //        data.list_price = products.list_price;
+        //        data.brand.brand_name = products.brand.brand_name;
+        //        data.category.category_name = products.category.category_name;
+        //        _context.SaveChanges();
+        //    }
+        //    return Json(JsonRequestBehavior.AllowGet);
+        //}
+
     }
 }

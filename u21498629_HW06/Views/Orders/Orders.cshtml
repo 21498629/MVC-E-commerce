@@ -1,0 +1,72 @@
+﻿@model PagedList.IPagedList<u21498629_HW06.Models.order_items>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h2>Orders</h2>
+
+@using (Html.BeginForm("Orders", "Orders", FormMethod.Get))
+{
+    <input type="date" name="orderdate" />
+    <input type="submit" name="submit" value="Search" class="btn btn-primary" />
+}
+
+<div>
+    @foreach (var item in Model)
+    {
+        decimal GrandTotal = 0;
+        <div class="form-group">
+            <h3>
+                Order @item.order_id - @item.order.order_date
+            </h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product Name </th>
+                        <th>List Price | </th>
+                        <th>Quantity | </th>
+                        <th>Total | </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in Model.Where(x => x.order_id == item.order_id))
+                    {
+                        decimal total = x.quantity * x.list_price;
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => x.product.product_name)  |
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => x.list_price) |
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => x.quantity) |
+                            </td>
+                            <td>
+                                @total
+                            </td>
+                        </tr>
+                        GrandTotal += total;
+                    }
+
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Grand Total:@GrandTotal</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <br />
+    }
+
+</div>
+
+@Html.PagedListPager(Model, page => Url.Action("Orders", "Orders", new
+{
+    page,
+    search = Request.QueryString["date"]
+        }))

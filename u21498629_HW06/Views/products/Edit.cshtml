@@ -7,7 +7,7 @@
 <div class="editModal">
     <h2>Edit</h2>
 
-<div class="modal-content" id="myModal" style="width: 500px; height: 500px">
+@*<div class="modal-content" id="myModal" style="width: 500px; height: 500px">*@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
@@ -70,7 +70,7 @@
         @Html.ActionLink("Back to List", "Index")
     </div>
 
-</div>
+@*</div>*@
 </div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
